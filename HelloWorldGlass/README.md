@@ -38,16 +38,17 @@ HelloWorldGlass/
 
 - Android Studio
 - Android SDK API 19 (KitKat 4.4.2)
-- Glass Development Kit Preview
+- Glass Development Kit Developer Preview
 - Google Glass Explorer Edition device
 
 ## Setup Instructions
 
-1. **Install Android Studio and SDK**
+1. **Install Android Studio and GDK**
    - Open Android Studio
-   - Go to SDK Manager
-   - Install Android 4.4.2 (API 19)
-   - Install "Glass Development Kit Preview" under API 19
+   - Go to SDK Manager (Tools → SDK Manager)
+   - Install Android 4.4.2 (API 19) SDK Platform
+   - Install "Glass Development Kit Developer Preview" addon for API 19
+   - The GDK should appear as "Google Inc.:Glass Development Kit Developer Preview:19"
 
 2. **Enable USB Debugging on Glass**
    - On Glass: Settings → Device Info → Turn on debug

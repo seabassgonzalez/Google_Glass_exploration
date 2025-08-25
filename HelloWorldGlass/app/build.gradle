@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion "Glass Development Kit Developer Preview"
+    compileSdkVersion "Google Inc.:Glass Development Kit Developer Preview:19"
+    buildToolsVersion "19.1.0"
     
     defaultConfig {
         applicationId "com.example.helloworldglass"
@@ -25,6 +26,6 @@ android {
 }
 
 dependencies {
-    // Glass Development Kit is included with the compileSdkVersion
+    // Glass Development Kit APIs are included with the compileSdkVersion
     // No additional dependencies needed for basic Glass app
 }
