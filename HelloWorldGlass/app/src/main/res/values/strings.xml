@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application name -->
+    <string name="app_name">Hello World Glass</string>
+    
+    <!-- Voice command to launch the app -->
+    <string name="voice_trigger">show hello world</string>
+    
+    <!-- Optional voice prompt for additional input -->
+    <string name="voice_prompt">Say something...</string>
+</resources>
