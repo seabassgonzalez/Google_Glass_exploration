@@ -1,0 +1,8 @@
+## This file should be copied to local.properties and updated with your SDK path
+## This file should NOT be checked into Version Control Systems
+
+# Location of the SDK. This is only used by Gradle.
+# For Mac/Linux:
+sdk.dir=/Users/YOUR_USERNAME/Library/Android/sdk
+# For Windows:
+# sdk.dir=C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Android\\sdk

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.glassgpsreceiver">
+
+    <!-- Bluetooth permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    
+    <!-- Development permission for Glass -->
+    <uses-permission android:name="com.google.android.glass.permission.DEVELOPMENT" />
+    
+    <!-- Wake lock to keep connection alive -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <!-- Declare that this app is for Glass -->
+    <uses-feature
+        android:name="android.hardware.type.glass"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@android:drawable/ic_menu_mylocation"
+        android:label="@string/app_name">
+        
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:immersive="true"
+            android:theme="@android:style/Theme.DeviceDefault">
+            
+            <!-- Main launcher intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+            <!-- Voice trigger intent -->
+            <intent-filter>
+                <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
+            </intent-filter>
+            
+            <!-- Voice trigger metadata -->
+            <meta-data
+                android:name="com.google.android.glass.VoiceTrigger"
+                android:resource="@xml/voice_trigger" />
+        </activity>
+        
+    </application>
+
+</manifest>
