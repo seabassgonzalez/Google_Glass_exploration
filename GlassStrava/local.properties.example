@@ -1,0 +1,11 @@
+# Example local.properties file
+# Copy this file to local.properties and add your actual Strava API credentials
+# DO NOT commit local.properties to version control!
+
+# Get your credentials from https://www.strava.com/settings/api
+strava.client.id=YOUR_CLIENT_ID_HERE
+strava.client.secret=YOUR_CLIENT_SECRET_HERE
+
+# Example (DO NOT USE THESE):
+# strava.client.id=12345
+# strava.client.secret=abc123def456ghi789jkl012mno345pqr678stu

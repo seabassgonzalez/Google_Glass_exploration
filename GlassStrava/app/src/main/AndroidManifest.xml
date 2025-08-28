@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.glassstrava">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.glass.permission.DEVELOPMENT" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault">
+        
+        <!-- Main Activity - Feature Selection -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:immersive="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
+            </intent-filter>
+            <meta-data
+                android:name="com.google.android.glass.VoiceTrigger"
+                android:resource="@xml/voice_trigger_main" />
+        </activity>
+        
+        <!-- OAuth Authentication Activity -->
+        <activity
+            android:name=".activities.StravaAuthActivity"
+            android:label="@string/auth_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="glassstrava" android:host="oauth" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Activity Tracking -->
+        <activity
+            android:name=".activities.ActivityTrackingActivity"
+            android:label="@string/tracking_title"
+            android:immersive="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
+            </intent-filter>
+            <meta-data
+                android:name="com.google.android.glass.VoiceTrigger"
+                android:resource="@xml/voice_trigger_tracking" />
+        </activity>
+        
+        <!-- Segment Activity -->
+        <activity
+            android:name=".activities.SegmentActivity"
+            android:label="@string/segments_title"
+            android:immersive="false" />
+        
+        <!-- Route Navigation -->
+        <activity
+            android:name=".activities.RouteNavigationActivity"
+            android:label="@string/navigation_title"
+            android:immersive="true" />
+        
+        <!-- Performance Metrics -->
+        <activity
+            android:name=".activities.PerformanceActivity"
+            android:label="@string/performance_title"
+            android:immersive="false" />
+        
+        <!-- Services -->
+        <service
+            android:name=".services.ActivityTrackingService"
+            android:exported="false" />
+        
+        <service
+            android:name=".services.StravaApiService"
+            android:exported="false" />
+        
+        <service
+            android:name=".services.LocationTrackingService"
+            android:exported="false" />
+        
+    </application>
+
+</manifest>

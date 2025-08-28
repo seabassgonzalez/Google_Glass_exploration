@@ -1,0 +1,39 @@
+# IDE files
+.idea/
+*.iml
+.DS_Store
+
+# Build files
+*/build/
+*/.gradle/
+*.apk
+*.aab
+
+# Local configuration files - NEVER commit these
+*/local.properties
+**/local.properties
+*/secrets.properties
+*.keystore
+*.jks
+
+# API Keys and credentials
+**/api_keys.xml
+**/secrets.xml
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# Android
+*.log
+captures/
+.externalNativeBuild
+.cxx/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

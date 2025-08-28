@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_stop"
+        android:title="@string/action_stop"
+        android:icon="@android:drawable/ic_media_pause" />
+    
+    <item
+        android:id="@+id/action_change_type"
+        android:title="@string/action_change_type"
+        android:icon="@android:drawable/ic_menu_rotate" />
+    
+    <item
+        android:id="@+id/action_discard"
+        android:title="@string/action_discard"
+        android:icon="@android:drawable/ic_menu_delete" />
+</menu>

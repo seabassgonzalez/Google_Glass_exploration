@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Glass Strava</string>
+    
+    <!-- Voice Triggers -->
+    <string name="voice_trigger_main">start strava</string>
+    <string name="voice_trigger_tracking">track activity</string>
+    <string name="voice_trigger_segments">show segments</string>
+    <string name="voice_trigger_navigation">navigate route</string>
+    
+    <!-- Activity Titles -->
+    <string name="auth_title">Strava Authentication</string>
+    <string name="tracking_title">Activity Tracking</string>
+    <string name="segments_title">Live Segments</string>
+    <string name="navigation_title">Route Navigation</string>
+    <string name="performance_title">Performance Metrics</string>
+    
+    <!-- Menu Items -->
+    <string name="action_stop">Stop</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_change_type">Change Type</string>
+    <string name="action_discard">Discard</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Messages -->
+    <string name="loading">Loading...</string>
+    <string name="connecting">Connecting to Strava...</string>
+    <string name="authenticated">Connected to Strava</string>
+    <string name="error">Error</string>
+    <string name="no_location">Waiting for GPS...</string>
+    <string name="tracking_started">Activity started</string>
+    <string name="tracking_paused">Activity paused</string>
+    <string name="tracking_stopped">Activity saved</string>
+    <string name="route_complete">Route complete!</string>
+    <string name="segment_nearby">Segment nearby</string>
+</resources>
