@@ -24,8 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.glasscompanion.activities.GoogleSignInActivity
 import com.example.glasscompanion.activities.StravaActivity
 import com.example.glasscompanion.services.BluetoothService
+import com.example.glasscompanion.services.GoogleAuthManager
 import com.example.glasscompanion.services.LocationService
 import com.example.glasscompanion.services.StravaAuthManager
 import com.example.glasscompanion.ui.theme.GlassCompanionTheme
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var bluetoothService: BluetoothService
     private lateinit var locationService: LocationService
     private lateinit var stravaAuthManager: StravaAuthManager
+    private lateinit var googleAuthManager: GoogleAuthManager
     
     private val requestBluetoothPermission = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -65,6 +68,7 @@ class MainActivity : ComponentActivity() {
         bluetoothService = BluetoothService(this)
         locationService = LocationService(this)
         stravaAuthManager = StravaAuthManager(this)
+        googleAuthManager = GoogleAuthManager(this)
         
         checkAndRequestPermissions()
         
@@ -78,8 +82,10 @@ class MainActivity : ComponentActivity() {
                         bluetoothService = bluetoothService,
                         locationService = locationService,
                         stravaAuthManager = stravaAuthManager,
+                        googleAuthManager = googleAuthManager,
                         onRequestLocationPermission = { requestLocationPermissions() },
-                        onOpenStravaActivity = { openStravaActivity() }
+                        onOpenStravaActivity = { openStravaActivity() },
+                        onOpenGoogleSignIn = { openGoogleSignInActivity() }
                     )
                 }
             }
@@ -143,6 +149,11 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
     }
     
+    private fun openGoogleSignInActivity() {
+        val intent = Intent(this, GoogleSignInActivity::class.java)
+        startActivity(intent)
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
         bluetoothService.disconnect()
@@ -156,8 +167,10 @@ fun CompanionScreen(
     bluetoothService: BluetoothService,
     locationService: LocationService,
     stravaAuthManager: StravaAuthManager,
+    googleAuthManager: GoogleAuthManager,
     onRequestLocationPermission: () -> Unit,
-    onOpenStravaActivity: () -> Unit
+    onOpenStravaActivity: () -> Unit,
+    onOpenGoogleSignIn: () -> Unit
 ) {
     var pairedDevices by remember { mutableStateOf<List<BluetoothDevice>>(emptyList()) }
     var connectedDevice by remember { mutableStateOf<BluetoothDevice?>(null) }
@@ -165,6 +178,7 @@ fun CompanionScreen(
     var currentLocation by remember { mutableStateOf("Location not available") }
     var isGpsSharing by remember { mutableStateOf(false) }
     val stravaState by stravaAuthManager.authState.collectAsState()
+    val googleState by googleAuthManager.authState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     
     LaunchedEffect(Unit) {
@@ -281,6 +295,63 @@ fun CompanionScreen(
                         },
                         enabled = connectedDevice != null
                     )
+                }
+            }
+        }
+        
+        // Google Account Card
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            onClick = onOpenGoogleSignIn
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Google Account for Glass",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                        Text(
+                            text = if (googleState.isAuthenticated) 
+                                "Signed in: ${googleState.userEmail}" 
+                            else "Sign in to enable Glass services",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
+                    Icon(
+                        imageVector = Icons.Filled.ChevronRight,
+                        contentDescription = "Open Google Sign-In",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                if (googleState.isAuthenticated && connectedDevice != null) {
+                    Button(
+                        onClick = {
+                            googleAuthManager.getCredentialsForGlass()?.let { credentials ->
+                                bluetoothService.sendGoogleCredentials(credentials)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
+                    ) {
+                        Text("Sync Google Account to Glass")
+                    }
                 }
             }
         }

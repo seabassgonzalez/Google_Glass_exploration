@@ -30,6 +30,10 @@ android {
         buildConfigField("String", "STRAVA_CLIENT_ID", "\"${localProperties.getProperty("strava.client.id", "")}\"")
         buildConfigField("String", "STRAVA_CLIENT_SECRET", "\"${localProperties.getProperty("strava.client.secret", "")}\"")
         
+        // Add Google OAuth Client ID (you'll need to register this in Google Cloud Console)
+        // For now, using a placeholder - replace with your actual client ID
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com\"")
+        
         // Add OAuth redirect URI
         manifestPlaceholders["redirectUriScheme"] = "glasscompanion"
     }
@@ -108,6 +112,9 @@ dependencies {
     
     // Custom Tabs for OAuth
     implementation("androidx.browser:browser:1.7.0")
+    
+    // Image loading for profile pictures
+    implementation("io.coil-kt:coil-compose:2.5.0")
     
     // Testing
     testImplementation("junit:junit:4.13.2")

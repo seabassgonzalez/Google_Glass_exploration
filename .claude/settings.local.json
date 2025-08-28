@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:developers.google.com)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(keytool:*)",
+      "Read(//Users/seabassgonzalez/**)"
     ],
     "deny": [],
     "ask": []

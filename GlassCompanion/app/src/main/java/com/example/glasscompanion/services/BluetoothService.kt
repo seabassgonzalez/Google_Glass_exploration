@@ -199,6 +199,25 @@ class BluetoothService(val context: Context) {
         return sendMessage(stravaJson.toString())
     }
     
+    /**
+     * Sends Google account credentials to Glass for authentication
+     */
+    fun sendGoogleCredentials(credentials: GoogleAuthManager.GoogleCredentials): Boolean {
+        val credentialJson = JSONObject().apply {
+            put("type", "google_credentials")
+            put("access_token", credentials.accessToken)
+            put("refresh_token", credentials.refreshToken)
+            put("expires_at", credentials.expiresAt)
+            put("user_email", credentials.userEmail)
+            put("user_name", credentials.userName)
+            put("user_id", credentials.userId)
+            put("timestamp", System.currentTimeMillis())
+        }
+        
+        Log.d(TAG, "Sending Google credentials to Glass for user: ${credentials.userEmail}")
+        return sendMessage(credentialJson.toString())
+    }
+    
     private fun startListening() {
         Thread {
             val buffer = ByteArray(1024)

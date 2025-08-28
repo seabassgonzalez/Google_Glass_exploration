@@ -72,6 +72,25 @@
             </intent-filter>
         </activity>
         
+        <!-- Google Sign-In Activity with OAuth callback -->
+        <activity
+            android:name=".activities.GoogleSignInActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.GlassCompanion"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                
+                <data
+                    android:scheme="glasscompanion"
+                    android:host="google"
+                    android:path="/oauth" />
+            </intent-filter>
+        </activity>
+        
         <!-- Foreground Service for maintaining Bluetooth connection -->
         <service
             android:name=".services.BluetoothConnectionService"
