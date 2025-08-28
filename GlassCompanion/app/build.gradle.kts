@@ -3,6 +3,13 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+// Load local properties for API keys
+val localProperties = java.util.Properties()
+val localPropertiesFile = rootProject.file("../GlassStrava/local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(java.io.FileInputStream(localPropertiesFile))
+}
+
 android {
     namespace = "com.example.glasscompanion"
     compileSdk = 34  // Android 14
@@ -18,6 +25,13 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        
+        // Add Strava API credentials
+        buildConfigField("String", "STRAVA_CLIENT_ID", "\"${localProperties.getProperty("strava.client.id", "")}\"")
+        buildConfigField("String", "STRAVA_CLIENT_SECRET", "\"${localProperties.getProperty("strava.client.secret", "")}\"")
+        
+        // Add OAuth redirect URI
+        manifestPlaceholders["redirectUriScheme"] = "glasscompanion"
     }
     
     buildTypes {
@@ -78,6 +92,22 @@ dependencies {
     
     // JSON parsing (optional, Kotlin has built-in JSON support)
     implementation("org.json:json:20231013")
+    
+    // Networking for Strava API
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    
+    // Security - Encrypted SharedPreferences
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    
+    // QR Code generation for credential transfer
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    
+    // Custom Tabs for OAuth
+    implementation("androidx.browser:browser:1.7.0")
     
     // Testing
     testImplementation("junit:junit:4.13.2")

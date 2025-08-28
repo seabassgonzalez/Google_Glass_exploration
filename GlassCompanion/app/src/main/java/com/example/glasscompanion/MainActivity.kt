@@ -16,14 +16,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.glasscompanion.activities.StravaActivity
 import com.example.glasscompanion.services.BluetoothService
 import com.example.glasscompanion.services.LocationService
+import com.example.glasscompanion.services.StravaAuthManager
 import com.example.glasscompanion.ui.theme.GlassCompanionTheme
 import kotlinx.coroutines.launch
 
@@ -31,6 +35,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private lateinit var bluetoothService: BluetoothService
     private lateinit var locationService: LocationService
+    private lateinit var stravaAuthManager: StravaAuthManager
     
     private val requestBluetoothPermission = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -59,6 +64,7 @@ class MainActivity : ComponentActivity() {
         
         bluetoothService = BluetoothService(this)
         locationService = LocationService(this)
+        stravaAuthManager = StravaAuthManager(this)
         
         checkAndRequestPermissions()
         
@@ -71,7 +77,9 @@ class MainActivity : ComponentActivity() {
                     CompanionScreen(
                         bluetoothService = bluetoothService,
                         locationService = locationService,
-                        onRequestLocationPermission = { requestLocationPermissions() }
+                        stravaAuthManager = stravaAuthManager,
+                        onRequestLocationPermission = { requestLocationPermissions() },
+                        onOpenStravaActivity = { openStravaActivity() }
                     )
                 }
             }
@@ -130,6 +138,11 @@ class MainActivity : ComponentActivity() {
         }
     }
     
+    private fun openStravaActivity() {
+        val intent = Intent(this, StravaActivity::class.java)
+        startActivity(intent)
+    }
+    
     override fun onDestroy() {
         super.onDestroy()
         bluetoothService.disconnect()
@@ -142,13 +155,16 @@ class MainActivity : ComponentActivity() {
 fun CompanionScreen(
     bluetoothService: BluetoothService,
     locationService: LocationService,
-    onRequestLocationPermission: () -> Unit
+    stravaAuthManager: StravaAuthManager,
+    onRequestLocationPermission: () -> Unit,
+    onOpenStravaActivity: () -> Unit
 ) {
     var pairedDevices by remember { mutableStateOf<List<BluetoothDevice>>(emptyList()) }
     var connectedDevice by remember { mutableStateOf<BluetoothDevice?>(null) }
     var isScanning by remember { mutableStateOf(false) }
     var currentLocation by remember { mutableStateOf("Location not available") }
     var isGpsSharing by remember { mutableStateOf(false) }
+    val stravaState by stravaAuthManager.authState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     
     LaunchedEffect(Unit) {
@@ -265,6 +281,63 @@ fun CompanionScreen(
                         },
                         enabled = connectedDevice != null
                     )
+                }
+            }
+        }
+        
+        // Strava Integration Card
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            onClick = onOpenStravaActivity
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Strava for Glass",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                        Text(
+                            text = if (stravaState.isAuthenticated) 
+                                "Connected: ${stravaState.athleteName}" 
+                            else "Sign in to enable Glass features",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
+                    Icon(
+                        imageVector = Icons.Filled.ChevronRight,
+                        contentDescription = "Open Strava",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+                
+                if (stravaState.isAuthenticated && connectedDevice != null) {
+                    Button(
+                        onClick = {
+                            stravaAuthManager.getCredentialsForGlass()?.let { credentials ->
+                                bluetoothService.sendStravaCredentials(credentials)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
+                    ) {
+                        Text("Sync Strava to Glass")
+                    }
                 }
             }
         }

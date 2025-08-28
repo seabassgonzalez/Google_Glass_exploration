@@ -54,10 +54,38 @@
             </intent-filter>
         </activity>
         
+        <!-- Strava Activity with OAuth callback -->
+        <activity
+            android:name=".activities.StravaActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.GlassCompanion"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                
+                <data
+                    android:scheme="glasscompanion"
+                    android:host="oauth" />
+            </intent-filter>
+        </activity>
+        
         <!-- Foreground Service for maintaining Bluetooth connection -->
         <service
             android:name=".services.BluetoothConnectionService"
             android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+            
+        <!-- Additional services -->
+        <service
+            android:name=".services.BluetoothService"
+            android:exported="false" />
+        
+        <service
+            android:name=".services.LocationService"
             android:exported="false"
             android:foregroundServiceType="location" />
             

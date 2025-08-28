@@ -167,6 +167,38 @@ class BluetoothService(val context: Context) {
         return sendMessage(commandJson.toString())
     }
     
+    /**
+     * Sends Strava credentials to Glass for authentication
+     */
+    fun sendStravaCredentials(credentials: StravaAuthManager.StravaCredentials): Boolean {
+        val credentialJson = JSONObject().apply {
+            put("type", "strava_credentials")
+            put("access_token", credentials.accessToken)
+            put("refresh_token", credentials.refreshToken)
+            put("expires_at", credentials.expiresAt)
+            put("athlete_id", credentials.athleteId)
+            put("athlete_name", credentials.athleteName)
+            put("timestamp", System.currentTimeMillis())
+        }
+        
+        Log.d(TAG, "Sending Strava credentials to Glass")
+        return sendMessage(credentialJson.toString())
+    }
+    
+    /**
+     * Sends Strava activity or route data to Glass
+     */
+    fun sendStravaData(dataType: String, data: JSONObject): Boolean {
+        val stravaJson = JSONObject().apply {
+            put("type", "strava_data")
+            put("data_type", dataType)
+            put("data", data)
+            put("timestamp", System.currentTimeMillis())
+        }
+        
+        return sendMessage(stravaJson.toString())
+    }
+    
     private fun startListening() {
         Thread {
             val buffer = ByteArray(1024)
