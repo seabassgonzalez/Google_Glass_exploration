@@ -41,10 +41,12 @@ These fingerprints are required when configuring Google OAuth 2.0 in the Google 
    - Select "Web application" as type
    - Add authorized redirect URI: `glasscompanion://google/oauth`
 
-6. Copy the Client ID and update in `app/build.gradle.kts`:
-   ```kotlin
-   buildConfigField("String", "GOOGLE_CLIENT_ID", "\"YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com\"")
+6. Copy the Client ID and add to `local.properties`:
+   ```properties
+   google.client.id=YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com
    ```
+   
+   ✅ **Already configured** - Your Client ID is securely stored in local.properties
 
 ## Important Security Notes
 

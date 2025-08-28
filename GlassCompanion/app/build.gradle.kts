@@ -5,9 +5,15 @@ plugins {
 
 // Load local properties for API keys
 val localProperties = java.util.Properties()
-val localPropertiesFile = rootProject.file("../GlassStrava/local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(java.io.FileInputStream(localPropertiesFile))
+// First try to load from GlassCompanion local.properties
+val companionPropertiesFile = rootProject.file("local.properties")
+if (companionPropertiesFile.exists()) {
+    localProperties.load(java.io.FileInputStream(companionPropertiesFile))
+}
+// Also load Strava properties if they exist
+val stravaPropertiesFile = rootProject.file("../GlassStrava/local.properties")
+if (stravaPropertiesFile.exists()) {
+    localProperties.load(java.io.FileInputStream(stravaPropertiesFile))
 }
 
 android {
@@ -30,9 +36,8 @@ android {
         buildConfigField("String", "STRAVA_CLIENT_ID", "\"${localProperties.getProperty("strava.client.id", "")}\"")
         buildConfigField("String", "STRAVA_CLIENT_SECRET", "\"${localProperties.getProperty("strava.client.secret", "")}\"")
         
-        // Add Google OAuth Client ID (you'll need to register this in Google Cloud Console)
-        // For now, using a placeholder - replace with your actual client ID
-        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com\"")
+        // Add Google OAuth Client ID from local.properties
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"${localProperties.getProperty("google.client.id", "")}\"")
         
         // Add OAuth redirect URI
         manifestPlaceholders["redirectUriScheme"] = "glasscompanion"
