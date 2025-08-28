@@ -23,7 +23,9 @@ This project resurrects Google Glass technology, terminated by Google in 2015, d
 - ✅ Implemented multiple Glass Development Kit (GDK) applications
 - ✅ Created productivity tools (Pomodoro Timer) for hands-free time management
 - ✅ Built real-time GPS receiver for location-based services
+- ✅ Integrated Strava fitness platform with full API support
 - ✅ Established Bluetooth communication between Glass and modern devices
+- ✅ Implemented OAuth 2.0 secure authentication flow
 
 ---
 
@@ -41,9 +43,12 @@ graph LR
 ### 🛠️ Technology Stack
 - **Glass Development Kit (GDK)** - Native Glass applications
 - **Android SDK** - Companion mobile application
-- **Bluetooth LE** - Low-energy device communication
-- **REST APIs** - Cloud service integration
-- **Computer Vision** - Image recognition and AR overlays
+- **Jetpack Compose** - Modern declarative UI for Android
+- **Bluetooth SPP** - Serial Port Profile for data communication
+- **OAuth 2.0** - Secure authentication with Strava
+- **REST APIs** - Cloud service integration (Strava API v3)
+- **OkHttp & Retrofit** - Network communication libraries
+- **Android Security Crypto** - Encrypted credential storage
 
 ---
 
@@ -69,12 +74,24 @@ graph LR
 - Gesture controls: TAP to start/pause, SWIPE to skip, TWO_TAP to reset
 - Audio and haptic feedback for timer events
 
-### Companion Mobile App
+#### **Glass Strava** 🚴
+- Complete Strava fitness platform integration
+- Real-time activity tracking (running, cycling, walking)
+- Live Segments with performance comparison
+- Route navigation with turn-by-turn directions
+- Performance metrics display (pace, heart rate, power)
+- Auto-sync with Strava cloud
+- OAuth 2.0 secure authentication via companion app
+
+### Companion Mobile App (GlassCompanion)
 - **Bluetooth Device Management** - Pair and connect with Glass
 - **GPS Location Sharing** - Real-time location streaming to Glass
+- **Strava OAuth Integration** - Secure authentication flow with Chrome Custom Tabs
+- **Credential Sync** - Transfer Strava tokens to Glass via Bluetooth or QR code
 - **Material Design 3 UI** - Modern Android interface with Jetpack Compose
 - **Permission Management** - Handles Bluetooth and location permissions
 - **Background Services** - Maintains connection and data sync
+- **Encrypted Storage** - Secure token storage using Android EncryptedSharedPreferences
 
 ---
 
@@ -138,6 +155,8 @@ This project showcases proficiency in:
 - 📱 **Mobile Development** - Android native application development
 - 🥽 **Wearable Tech** - Understanding of AR/VR principles
 - 🌐 **System Integration** - Connecting disparate technologies
+- 🔐 **Security** - OAuth 2.0 implementation and secure credential storage
+- 🏃 **Fitness API Integration** - Strava platform integration
 - 💡 **Innovation** - Finding new applications for existing technology
 - 📝 **Documentation** - Clear technical and business communication
 
